@@ -4,7 +4,7 @@ metadata:
   name: zomato-clone-service
 spec:
   selector:
-    app: reddit-clone
+    app: zomato-clone
   ports:
   - port: 80
     targetPort: 3000
