@@ -15,14 +15,14 @@ pipeline{
         }
         stage('Checkout from Git'){
             steps{
-                git branch: 'main', url: 'https://github.com/Dinesh-Arivu/Reddit-Clone-App-Deployment-A-DevSecOps-Approach-with-Terraform-and-Jenkins-CI-CD.git'
+                git branch: 'main', url: 'https://github.com/Dinesh-Arivu/Zomato-Clone-App-Deployment-A-DevSecOps-Approach-with-Terraform-and-Jenkins-CI-CD.git'
             }
         }
         stage("Sonarqube Analysis "){
             steps{
                 withSonarQubeEnv('sonar-server') {
-                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Reddit \
-                    -Dsonar.projectKey=Reddit '''
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Zomato \
+                    -Dsonar.projectKey=Zomato '''
                 }
             }
         }
@@ -53,21 +53,21 @@ pipeline{
             steps{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
-                       sh "docker build -t reddit ."
-                       sh "docker tag reddit dinesh1097/reddit:latest "
-                       sh "docker push dinesh1097/reddit:latest "
+                       sh "docker build -t zomato ."
+                       sh "docker tag zomato dinesh1097/zomato:latest "
+                       sh "docker push dinesh1097/zomato:latest "
                     }
                 }
             }
         }
         stage("TRIVY"){
             steps{
-                sh "trivy image dinesh1097/reddit:latest > trivyimage.txt"
+                sh "trivy image dinesh1097/zomato:latest > trivyimage.txt"
             }
         }
         stage('Deploy to container'){
             steps{
-                sh 'docker run -d --name reddit -p 3000:3000 dinesh1097/reddit:latest'
+                sh 'docker run -d --name zomato -p 3000:3000 dinesh1097/zomato:latest'
             }
         }
         stage('Deploy to kubernets'){
@@ -77,7 +77,6 @@ pipeline{
                         withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'k8s', namespace: '', restrictKubeConfigAccess: false, serverUrl: '') {
                                 sh 'kubectl apply -f deployment.yml'
                                 sh 'kubectl apply -f service.yml'
-                                sh 'kubectl apply -f ingress.yml'
                         }
                     }
                 }
