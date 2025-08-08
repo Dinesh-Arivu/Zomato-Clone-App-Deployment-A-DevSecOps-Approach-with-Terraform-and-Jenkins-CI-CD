@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: reddit-clone-deployment
+  name: zomato-clone-deployment
   labels:
-    app: reddit-clone
+    app: zomato-clone
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: reddit-clone
+      app: zomato-clone
   template:
     metadata:
       labels:
-        app: reddit-clone
+        app: zomato-clone
     spec:
       containers:
-      - name: reddit-clone
-        image: dinesh1097/reddit:latest
+      - name: zomato-clone
+        image: dinesh1097/zomato:latest
         ports:
         - containerPort: 3000
